@@ -1,0 +1,1846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="b0pfq — Roblox Scripter & Systems Developer portfolio." />
+  <meta name="theme-color" content="#10051c" />
+  <title>b0pfq | Systems Developer</title>
+  <style>
+    :root {
+      --bg: #10051c;
+      --bg-2: #120722;
+      --card: rgba(18, 7, 34, 0.42);
+      --card-strong: rgba(18, 7, 34, 0.70);
+      --white: #fff;
+      --muted: rgba(255,255,255,.62);
+      --muted-2: rgba(255,255,255,.45);
+      --muted-3: rgba(255,255,255,.28);
+      --purple: #a855f7;
+      --purple-2: #7c3aed;
+      --purple-3: #c084fc;
+      --indigo: #6366f1;
+      --indigo-2: #818cf8;
+      --emerald: #34d399;
+      --rose: #f43f5e;
+      --border: rgba(255,255,255,.10);
+      --border-strong: rgba(255,255,255,.18);
+      --shadow-purple: 0 0 30px rgba(124,58,237,.35);
+      --max: 1280px;
+      --nav-h: 80px;
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 12% 15%, rgba(88, 28, 135, .24), transparent 32rem),
+        radial-gradient(circle at 86% 78%, rgba(67, 56, 202, .20), transparent 34rem),
+        linear-gradient(180deg, #10051c 0%, #08020e 48%, #10051c 100%);
+      color: var(--white);
+      overflow-x: hidden;
+      selection-background-color: rgba(216, 180, 254, .40);
+    }
+
+    ::selection { background: rgba(216, 180, 254, .40); }
+
+    a { color: inherit; text-decoration: none; }
+    button, textarea, select { font: inherit; }
+    button { border: 0; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .background {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .blob {
+      position: absolute;
+      width: 24rem;
+      height: 24rem;
+      border-radius: 999px;
+      filter: blur(110px);
+      opacity: .75;
+    }
+    .blob.one { top: 22%; left: 18%; background: rgba(88, 28, 135, .16); }
+    .blob.two { bottom: 18%; right: 16%; background: rgba(49, 46, 129, .17); }
+    .blob.three { top: 4%; right: 2%; width: 18rem; height: 18rem; background: rgba(112, 26, 117, .08); }
+    .grid-bg {
+      position: absolute;
+      inset: 0;
+      opacity: .18;
+      background-image:
+        linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse at center, black 58%, transparent 100%);
+    }
+
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      width: 100%;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      height: var(--nav-h);
+      background: rgba(16, 5, 28, .88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      height: 80px;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      padding: .25rem;
+      text-align: left;
+    }
+    .logo-mark {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: .85rem;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #9333ea, #3730a3);
+      box-shadow: 0 10px 25px rgba(0,0,0,.32);
+      transition: box-shadow .25s, transform .25s;
+    }
+    .logo:hover .logo-mark { box-shadow: 0 0 28px rgba(168,85,247,.28); transform: translateY(-1px); }
+    .logo-title { display: flex; flex-direction: column; line-height: 1; }
+    .logo-title strong { font-size: 1.08rem; letter-spacing: -.025em; }
+    .logo-title span { margin-top: .25rem; font-size: .625rem; color: var(--purple); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-weight: 800; letter-spacing: .12em; }
+
+    .desktop-nav {
+      display: none;
+      align-items: center;
+      gap: .25rem;
+      padding: .38rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(255,255,255,.055);
+      backdrop-filter: blur(14px);
+    }
+    .nav-link {
+      border-radius: 999px;
+      padding: .65rem 1rem;
+      color: rgba(255,255,255,.62);
+      background: transparent;
+      cursor: pointer;
+      font-size: .74rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      transition: background .2s, color .2s, box-shadow .2s;
+    }
+    .nav-link:hover { color: #fff; background: rgba(255,255,255,.06); }
+    .nav-link.active { color: #fff; background: #7c3aed; box-shadow: 0 0 17px rgba(124,58,237,.42); }
+    .mobile-toggle {
+      display: grid;
+      place-items: center;
+      width: 2.65rem;
+      height: 2.65rem;
+      border-radius: .85rem;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.055);
+      color: #fff;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .mobile-toggle:hover { background: rgba(255,255,255,.11); }
+    .mobile-drawer {
+      display: none;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 80px;
+      padding: 1rem 1.5rem;
+      background: rgba(16, 5, 28, .96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      animation: fadeUp .35s ease both;
+    }
+    .mobile-drawer.open { display: block; }
+    .mobile-drawer .nav-link {
+      display: block;
+      width: 100%;
+      text-align: left;
+      border-radius: .85rem;
+      padding: .85rem 1rem;
+      margin: .15rem 0;
+      font-size: .85rem;
+    }
+
+    main { position: relative; z-index: 10; padding-top: 80px; }
+    section { scroll-margin-top: 80px; }
+    .section {
+      position: relative;
+      padding: 6rem 0;
+      border-top: 1px solid rgba(255,255,255,.055);
+    }
+    .section.tint { background: rgba(88, 28, 135, .055); }
+    .hero {
+      min-height: calc(100vh - 80px);
+      display: flex;
+      align-items: center;
+      padding: 4rem 0;
+      overflow: hidden;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .hero-copy { animation: fadeUp .7s ease both; }
+    .hero-side { animation: fadeUp .7s ease .15s both; }
+    .stack { display: grid; gap: 1.5rem; }
+    .stack-sm { display: grid; gap: 1rem; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .45rem .85rem;
+      border-radius: 999px;
+      background: rgba(168, 85, 247, .10);
+      border: 1px solid rgba(168, 85, 247, .22);
+      color: #d8b4fe;
+      font-size: .76rem;
+      font-weight: 900;
+    }
+    .badge.indigo { color: #c7d2fe; background: rgba(99, 102, 241, .10); border-color: rgba(99, 102, 241, .22); }
+    .badge.emerald { color: #a7f3d0; background: rgba(52, 211, 153, .10); border-color: rgba(52, 211, 153, .22); }
+
+    h1, h2, h3, h4, p { margin: 0; }
+    h1 {
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: -.045em;
+      font-weight: 900;
+    }
+    h2 {
+      font-size: clamp(2rem, 6vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -.045em;
+      font-weight: 900;
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #c084fc, #a855f7, #818cf8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 20px rgba(168,85,247,.28));
+    }
+    .lead {
+      color: rgba(255,255,255,.72);
+      font-weight: 300;
+      font-size: clamp(1.06rem, 2.6vw, 1.25rem);
+      line-height: 1.65;
+      max-width: 42rem;
+    }
+    .body-text {
+      color: rgba(255,255,255,.52);
+      font-size: .95rem;
+      line-height: 1.75;
+      max-width: 36rem;
+    }
+    .section-head {
+      text-align: center;
+      max-width: 48rem;
+      margin: 0 auto;
+      display: grid;
+      gap: 1rem;
+    }
+    .section-head p {
+      color: rgba(255,255,255,.52);
+      line-height: 1.75;
+      font-size: .95rem;
+    }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 1rem; padding-top: .25rem; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      border-radius: .85rem;
+      padding: .88rem 1.45rem;
+      cursor: pointer;
+      color: #fff;
+      font-size: .88rem;
+      font-weight: 900;
+      transition: transform .2s, box-shadow .2s, background .2s, border-color .2s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn.primary { background: #7c3aed; box-shadow: 0 4px 25px rgba(124,58,237,.45); }
+    .btn.primary:hover { background: #8b5cf6; box-shadow: 0 4px 30px rgba(124,58,237,.62); }
+    .btn.secondary { background: rgba(255,255,255,.055); border: 1px solid var(--border); }
+    .btn.secondary:hover { background: rgba(255,255,255,.10); border-color: rgba(168,85,247,.25); }
+    .btn.full { width: 100%; }
+    .btn.discord { background: linear-gradient(90deg, #4f46e5, #9333ea); box-shadow: 0 18px 40px rgba(0,0,0,.35); }
+    .btn.discord:hover { background: linear-gradient(90deg, #6366f1, #a855f7); }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      max-width: 34rem;
+      padding-top: .75rem;
+    }
+    .stat {
+      text-align: center;
+      padding: 1rem;
+    }
+    .stat strong {
+      display: block;
+      font-size: clamp(1.55rem, 5vw, 2rem);
+      font-weight: 950;
+      line-height: 1;
+    }
+    .stat span {
+      display: block;
+      margin-top: .42rem;
+      color: rgba(255,255,255,.40);
+      font-size: .63rem;
+      line-height: 1.25;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+
+    .gradient-border {
+      position: relative;
+      border-radius: 1.25rem;
+      border: 1px solid rgba(255,255,255,.10);
+      background:
+        linear-gradient(rgba(18,7,34,.82), rgba(18,7,34,.82)) padding-box,
+        linear-gradient(135deg, rgba(168,85,247,.35), rgba(255,255,255,.08), rgba(99,102,241,.22)) border-box;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 22px 70px rgba(0,0,0,.18);
+    }
+    .card-hover { transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      border-color: rgba(168,85,247,.33);
+      box-shadow: 0 24px 80px rgba(0,0,0,.25), 0 0 34px rgba(168,85,247,.10);
+    }
+
+    .icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      display: inline-block;
+      flex: none;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vertical-align: middle;
+    }
+    .icon.fill { fill: currentColor; stroke: none; }
+    .pulse { animation: pulse 1.8s cubic-bezier(.4,0,.6,1) infinite; }
+    .ping { animation: ping 1.15s cubic-bezier(0,0,.2,1) infinite; }
+
+    .hero-cards {
+      width: 100%;
+      max-width: 30rem;
+      margin: 0 auto;
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .discord-profile-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.55rem;
+      border: 1px solid rgba(216, 180, 254, .18);
+      background:
+        radial-gradient(circle at 65% 0%, rgba(124, 58, 237, .20), transparent 24rem),
+        linear-gradient(180deg, rgba(28, 8, 48, .95), rgba(17, 5, 30, .96));
+      box-shadow: 0 28px 90px rgba(0,0,0,.34), 0 0 60px rgba(124,58,237,.14);
+      backdrop-filter: blur(18px);
+    }
+    .discord-profile-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: inherit;
+      background: linear-gradient(130deg, rgba(216,180,254,.16), transparent 35%, rgba(99,102,241,.12));
+      opacity: .85;
+    }
+    .discord-banner {
+      position: relative;
+      height: 7.6rem;
+      background:
+        linear-gradient(90deg, rgba(111, 24, 170, .88), rgba(54, 31, 105, .94) 45%, rgba(79, 0, 121, .88)),
+        radial-gradient(circle at 15% 0%, rgba(216,180,254,.22), transparent 14rem);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .verified-pill {
+      position: absolute;
+      top: .7rem;
+      right: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .55rem 1rem;
+      border-radius: 999px;
+      background: rgba(16,5,28,.72);
+      border: 1px solid rgba(216,180,254,.12);
+      color: #d8b4fe;
+      font-size: .78rem;
+      font-weight: 950;
+      letter-spacing: .01em;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    .discord-profile-body {
+      position: relative;
+      z-index: 1;
+      padding: 0 1.35rem 1.35rem;
+    }
+    .profile-avatar-wrap {
+      position: relative;
+      width: 7.9rem;
+      margin-top: -3.9rem;
+    }
+    .profile-avatar {
+      width: 7.7rem;
+      height: 7.7rem;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      color: #fff;
+      font-size: 2.15rem;
+      font-weight: 950;
+      background: linear-gradient(135deg, #7c3aed, #1e1b4b);
+      border: .48rem solid #10051c;
+      outline: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 18px 45px rgba(0,0,0,.42);
+    }
+    .profile-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .profile-status-dot {
+      position: absolute;
+      right: .1rem;
+      bottom: .52rem;
+      width: 2.15rem;
+      height: 2.15rem;
+      border-radius: 999px;
+      border: .38rem solid #10051c;
+      background: #80848e;
+      box-shadow: 0 0 24px rgba(0,0,0,.35);
+    }
+    .profile-status-dot.online { background: #23a55a; box-shadow: 0 0 24px rgba(35,165,90,.50); }
+    .profile-status-dot.idle { background: #f0b232; box-shadow: 0 0 24px rgba(240,178,50,.45); }
+    .profile-status-dot.dnd { background: #ff2f68; box-shadow: 0 0 24px rgba(255,47,104,.50); }
+    .profile-status-dot.offline { background: #80848e; }
+    .profile-identity { margin-top: 1rem; }
+    .profile-identity h3 {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: .55rem;
+      font-size: clamp(2rem, 7vw, 2.55rem);
+      line-height: 1.05;
+      letter-spacing: -.055em;
+      font-weight: 950;
+    }
+    .profile-handle {
+      color: rgba(255,255,255,.43);
+      font-size: .64em;
+      letter-spacing: -.025em;
+      font-weight: 750;
+    }
+    .custom-status {
+      min-height: 2.15rem;
+      margin-top: .85rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      color: #d8b4fe;
+      font-size: 1.35rem;
+      line-height: 1.25;
+      word-break: break-word;
+    }
+    .custom-status .status-text { color: rgba(255,255,255,.74); font-size: .92rem; font-weight: 750; }
+    .custom-emoji-img { width: 1.55rem; height: 1.55rem; object-fit: contain; vertical-align: -0.2em; }
+    .profile-divider { height: 1px; margin: 1.65rem 0; background: rgba(255,255,255,.075); }
+    .profile-info-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
+    .profile-copy-tile {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: minmax(0,1fr) auto;
+      align-items: center;
+      gap: .85rem;
+      text-align: left;
+      padding: 1rem;
+      border-radius: 1rem;
+      border: 1px solid rgba(216,180,254,.10);
+      background: rgba(255,255,255,.055);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+      transition: transform .2s, background .2s, border-color .2s;
+    }
+    .profile-copy-tile:hover { transform: translateY(-2px); background: rgba(255,255,255,.085); border-color: rgba(216,180,254,.22); }
+    .profile-copy-tile span { grid-column: 1; grid-row: 1; display: block; color: rgba(255,255,255,.48); font-size: .82rem; font-weight: 750; }
+    .profile-copy-tile strong { grid-column: 1; grid-row: 2; display: block; margin-top: .22rem; color: rgba(255,255,255,.78); font-size: 1.1rem; line-height: 1.1; letter-spacing: .045em; font-weight: 700; }
+    .profile-copy-tile .icon { grid-column: 2; grid-row: 1 / span 2; width: 1.55rem; height: 1.55rem; color: #c084fc; }
+    .profile-availability {
+      display: grid;
+      place-items: center;
+      min-height: 11.5rem;
+      padding: 2rem 1.1rem;
+      text-align: center;
+      border-radius: 1.25rem;
+      border: 1px solid rgba(216,180,254,.10);
+      background: rgba(30, 4, 48, .56);
+    }
+    .profile-availability .icon { width: 3.25rem; height: 3.25rem; color: rgba(168,85,247,.43); margin-bottom: 1rem; }
+    .profile-availability h4 { font-size: 1.08rem; line-height: 1.25; font-weight: 950; color: rgba(255,255,255,.70); }
+    .profile-availability p { max-width: 20rem; margin: .8rem auto 0; color: rgba(255,255,255,.48); line-height: 1.55; font-size: .9rem; }
+    .profile-dm { padding: 1.1rem 1.2rem; border-radius: 1.1rem; font-size: 1rem; }
+    .copy-toast {
+      position: absolute;
+      left: 50%;
+      bottom: 1rem;
+      transform: translate(-50%, .5rem);
+      opacity: 0;
+      pointer-events: none;
+      padding: .55rem .75rem;
+      border-radius: 999px;
+      background: rgba(16,5,28,.94);
+      border: 1px solid rgba(216,180,254,.16);
+      color: #d8b4fe;
+      font-size: .75rem;
+      font-weight: 900;
+      transition: opacity .2s, transform .2s;
+    }
+    .copy-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    .music-card { padding: 1rem; background: rgba(18,7,34,.54); backdrop-filter: blur(16px); }
+    .music-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .9rem; }
+    .music-title { display: flex; gap: .75rem; align-items: center; }
+    .music-art {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 1rem;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(168,85,247,.35), rgba(79,70,229,.35));
+      border: 1px solid rgba(255,255,255,.12);
+      color: #d8b4fe;
+    }
+    .music-title h3 { font-size: .92rem; font-weight: 900; }
+    .music-title p { color: rgba(255,255,255,.45); font-size: .72rem; margin-top: .15rem; }
+    .play-btn {
+      width: 2.8rem;
+      height: 2.8rem;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: #7c3aed;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 0 24px rgba(124,58,237,.35);
+      transition: transform .2s, background .2s;
+    }
+    .play-btn:hover { transform: translateY(-1px) scale(1.03); background: #8b5cf6; }
+    .music-bars { height: 2.8rem; display: flex; gap: .24rem; align-items: end; padding: 0 .2rem; }
+    .bar {
+      width: 100%;
+      border-radius: 999px 999px 0 0;
+      background: linear-gradient(180deg, #c084fc, #6366f1);
+      opacity: .45;
+      height: var(--h, 30%);
+    }
+    .music-card.playing .bar { animation: equalize .75s ease-in-out infinite alternate; opacity: .95; }
+    .music-card.playing .bar:nth-child(2n) { animation-duration: .58s; }
+    .music-card.playing .bar:nth-child(3n) { animation-duration: .9s; }
+    .music-note { color: rgba(255,255,255,.42); font-size: .68rem; line-height: 1.45; margin-top: .75rem; }
+    .music-note a { color: #d8b4fe; font-weight: 850; text-decoration: underline; text-underline-offset: 3px; }
+    .music-note.error { color: #fda4af; }
+    .youtube-shell {
+      position: relative;
+      margin-top: .95rem;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 1rem;
+      border: 1px solid rgba(216,180,254,.12);
+      background: linear-gradient(135deg, rgba(88,28,135,.35), rgba(15,5,26,.85));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+      cursor: pointer;
+    }
+    .youtube-shell iframe,
+    .youtube-thumb,
+    .youtube-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .youtube-shell iframe {
+      display: none;
+      border: 0;
+      background: #000;
+    }
+    .youtube-shell.loaded iframe { display: block; }
+    .youtube-shell.loaded .youtube-thumb,
+    .youtube-shell.loaded .youtube-overlay { display: none; }
+    .youtube-thumb {
+      object-fit: cover;
+      opacity: .62;
+      filter: saturate(1.15) contrast(1.05);
+      transform: scale(1.03);
+    }
+    .youtube-overlay {
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 1rem;
+      background: radial-gradient(circle at center, rgba(0,0,0,.08), rgba(16,5,28,.72));
+    }
+    .youtube-overlay-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: .65rem;
+      padding: .72rem 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(16,5,28,.74);
+      color: #fff;
+      font-size: .78rem;
+      font-weight: 900;
+      box-shadow: 0 14px 38px rgba(0,0,0,.35);
+    }
+    .youtube-overlay-inner .icon { color: #d8b4fe; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: stretch; }
+    .grid-3 { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+
+    .role-card, .project-card, .skill-card, .contact-card { padding: 1.5rem; background-color: rgba(18,7,34,.36); backdrop-filter: blur(14px); }
+    .role-card { display: flex; flex-direction: column; justify-content: space-between; min-height: 100%; }
+    .role-head, .project-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+    .role-title { display: flex; align-items: center; gap: 1rem; min-width: 0; }
+    .icon-box {
+      width: 3rem;
+      height: 3rem;
+      flex: none;
+      border-radius: .85rem;
+      display: grid;
+      place-items: center;
+      background: rgba(88, 28, 135, .22);
+      border: 1px solid rgba(168,85,247,.18);
+      color: #c084fc;
+    }
+    .role-title h3 { font-size: 1.12rem; line-height: 1.25; font-weight: 900; }
+    .role-title p { color: #a855f7; font-size: .75rem; margin-top: .2rem; font-weight: 800; letter-spacing: .02em; }
+    .status {
+      flex: none;
+      border-radius: 999px;
+      padding: .32rem .66rem;
+      border: 1px solid rgba(255,255,255,.1);
+      font-size: .61rem;
+      line-height: 1.25;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: .10em;
+      text-align: right;
+      max-width: 10rem;
+    }
+    .status.emerald { color: #34d399; background: rgba(16,185,129,.10); border-color: rgba(16,185,129,.22); box-shadow: 0 0 15px rgba(52,211,153,.10); }
+    .status.purple { color: #c084fc; background: rgba(168,85,247,.10); border-color: rgba(168,85,247,.22); box-shadow: 0 0 15px rgba(168,85,247,.10); }
+    .status.indigo { color: #818cf8; background: rgba(99,102,241,.10); border-color: rgba(99,102,241,.22); box-shadow: 0 0 15px rgba(129,140,248,.10); }
+    .status.dim { color: rgba(255,255,255,.42); background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.10); }
+    .description { color: rgba(255,255,255,.61); font-size: .83rem; line-height: 1.75; }
+    .mini-heading {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      color: rgba(255,255,255,.42);
+      font-size: .64rem;
+      font-weight: 950;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: .7rem;
+    }
+    ul.clean { list-style: none; padding: 0; margin: 0; display: grid; gap: .55rem; }
+    ul.clean li { display: flex; align-items: flex-start; gap: .55rem; color: rgba(255,255,255,.76); font-size: .78rem; line-height: 1.6; }
+    .bullet { color: #a855f7; font-weight: 950; line-height: 1.2; margin-top: .05rem; }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+      padding-top: 1.5rem;
+      margin-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,.055);
+    }
+    .tag {
+      border-radius: .42rem;
+      padding: .3rem .5rem;
+      background: rgba(255,255,255,.052);
+      border: 1px solid rgba(255,255,255,.055);
+      color: rgba(255,255,255,.42);
+      font-size: .62rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-weight: 650;
+    }
+
+    .skill-card { transition: transform .22s ease; }
+    .skill-card:hover { transform: translateY(-4px); }
+    .skill-card h3 { font-size: 1rem; margin: 1rem 0 .55rem; font-weight: 900; }
+    .skill-card p { color: rgba(255,255,255,.52); font-size: .79rem; line-height: 1.72; }
+    .skill-icon { color: #c084fc; }
+    .skill-icon.emerald { color: #6ee7b7; background: rgba(16,185,129,.10); border-color: rgba(16,185,129,.20); }
+    .skill-icon.indigo { color: #a5b4fc; background: rgba(99,102,241,.10); border-color: rgba(99,102,241,.20); }
+
+    .terminal-shell {
+      overflow: hidden;
+      background: rgba(7, 2, 13, .68);
+      border-radius: 1.5rem;
+    }
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .9rem 1rem;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.035);
+    }
+    .window-dots { display: flex; gap: .45rem; }
+    .dot { width: .72rem; height: .72rem; border-radius: 999px; }
+    .dot.red { background: #fb7185; }
+    .dot.yellow { background: #facc15; }
+    .dot.green { background: #4ade80; }
+    .terminal-title { color: rgba(255,255,255,.55); font-size: .75rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-weight: 800; }
+    .terminal-body { display: grid; grid-template-columns: 1fr; min-height: 32rem; }
+    .scenario-list { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.025); }
+    .scenario-btn {
+      width: 100%;
+      text-align: left;
+      border-radius: .9rem;
+      padding: .85rem;
+      margin-bottom: .55rem;
+      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(255,255,255,.055);
+      color: rgba(255,255,255,.70);
+      cursor: pointer;
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .scenario-btn:hover, .scenario-btn.active { background: rgba(124,58,237,.16); border-color: rgba(168,85,247,.25); color: #fff; }
+    .scenario-btn strong { display: block; font-size: .82rem; }
+    .scenario-btn span { display: block; margin-top: .24rem; font-size: .68rem; color: rgba(255,255,255,.42); }
+    .code-panel { display: grid; grid-template-rows: auto 1fr auto; min-width: 0; }
+    .code-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
+      padding: .85rem 1rem;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .code-toolbar h3 { font-size: .9rem; }
+    .execute-btn, .copy-btn {
+      border-radius: .7rem;
+      padding: .55rem .85rem;
+      color: #fff;
+      cursor: pointer;
+      font-size: .76rem;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+    }
+    .execute-btn { background: #7c3aed; box-shadow: 0 0 18px rgba(124,58,237,.28); }
+    .copy-btn { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.08); }
+    pre.code {
+      margin: 0;
+      overflow: auto;
+      padding: 1rem;
+      min-height: 20rem;
+      max-height: 32rem;
+      background: rgba(0,0,0,.20);
+      color: #d8b4fe;
+      font-size: .78rem;
+      line-height: 1.65;
+      tab-size: 2;
+    }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+    .log-output {
+      min-height: 8rem;
+      max-height: 15rem;
+      overflow: auto;
+      padding: 1rem;
+      background: rgba(0,0,0,.32);
+      border-top: 1px solid rgba(255,255,255,.07);
+      color: rgba(255,255,255,.70);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .76rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+    .log-line.ok { color: #86efac; }
+    .log-line.warn { color: #fde68a; }
+    .log-line.info { color: #c4b5fd; }
+
+    .project-card { display: flex; flex-direction: column; justify-content: space-between; }
+    .project-icon { width: 2.5rem; height: 2.5rem; border-radius: .85rem; display: grid; place-items: center; color: #c084fc; background: rgba(88,28,135,.18); border: 1px solid rgba(168,85,247,.18); }
+    .project-category {
+      max-width: 14rem;
+      text-align: right;
+      border-radius: 999px;
+      padding: .32rem .62rem;
+      color: #c084fc;
+      background: rgba(168,85,247,.10);
+      border: 1px solid rgba(168,85,247,.20);
+      font-size: .61rem;
+      line-height: 1.25;
+      font-weight: 950;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .project-card h3 { font-size: 1.15rem; font-weight: 900; transition: color .2s; }
+    .project-card:hover h3 { color: #c084fc; }
+    .project-stats { display: flex; align-items: center; gap: .45rem; color: #d8b4fe; font-size: .78rem; font-weight: 900; }
+
+    .timeline-wrap { max-width: 56rem; margin: 0 auto; }
+    .discord-symbol {
+      width: 4rem;
+      height: 4rem;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 1rem;
+      color: #818cf8;
+      background: rgba(99,102,241,.10);
+      border: 1px solid rgba(99,102,241,.20);
+      margin-bottom: .6rem;
+    }
+    .timeline { position: relative; margin-top: 4rem; }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 1.5rem;
+      width: 2px;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, rgba(168,85,247,.55), rgba(99,102,241,.24), transparent);
+    }
+    .timeline-item { position: relative; display: grid; grid-template-columns: 1fr; gap: .75rem; margin: 0 0 3rem; padding-left: 3rem; }
+    .timeline-node {
+      position: absolute;
+      left: 1.5rem;
+      top: 1.35rem;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 999px;
+      transform: translateX(-50%);
+      border: 4px solid var(--bg);
+      z-index: 2;
+      box-shadow: 0 0 15px #a78bfa;
+      background: #a855f7;
+    }
+    .timeline-node.indigo { background: #6366f1; box-shadow: 0 0 15px #818cf8; }
+    .timeline-card { padding: 1.5rem; background: rgba(18,7,34,.36); backdrop-filter: blur(14px); }
+    .timeline-card h4 { font-size: 1rem; font-weight: 950; margin-bottom: .55rem; }
+    .timeline-card p { color: rgba(255,255,255,.60); font-size: .78rem; line-height: 1.72; }
+    .date-pill { justify-self: start; }
+
+    .contact-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: stretch; }
+    .contact-card { display: flex; flex-direction: column; justify-content: space-between; gap: 1.5rem; }
+    .contact-head { display: flex; align-items: center; gap: .8rem; }
+    .contact-head h3 { font-size: 1rem; font-weight: 900; }
+    .contact-card p { color: rgba(255,255,255,.60); font-size: .78rem; line-height: 1.75; }
+    .info-grid { display: grid; gap: .72rem; }
+    .info-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .8rem;
+      border-radius: .72rem;
+      background: rgba(255,255,255,.052);
+      border: 1px solid rgba(255,255,255,.055);
+      color: rgba(255,255,255,.52);
+      font-size: .78rem;
+    }
+    .info-row strong { color: #d8b4fe; }
+    .info-row strong.green { color: #34d399; }
+
+    .miku-section {
+      position: relative;
+      z-index: 10;
+      overflow: hidden;
+      padding: 2rem 1.5rem 0;
+    }
+    .miku-wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex;
+    }
+    .miku-wrap.left { justify-content: flex-start; }
+    .miku-wrap.right { justify-content: flex-end; }
+    .miku-card {
+      position: relative;
+      width: min(88vw, 560px);
+      transform: translateY(1.25rem) rotate(var(--rot, 0deg));
+      overflow: hidden;
+      border-radius: 2rem 2rem 0 0;
+      border: 1px solid rgba(255,255,255,.20);
+      border-bottom: 0;
+      box-shadow: 0 -12px 70px rgba(216,180,254,.28);
+    }
+    .miku-card img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
+    .miku-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(0deg, rgba(59,7,100,.35), transparent 55%, rgba(255,255,255,.05));
+    }
+
+    footer {
+      position: relative;
+      z-index: 10;
+      padding: 3rem 0;
+      border-top: 1px solid var(--border);
+      background: rgba(16,5,28,.95);
+      color: rgba(255,255,255,.62);
+      font-size: .76rem;
+    }
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      text-align: center;
+    }
+    .footer-logo { display: flex; align-items: center; gap: .7rem; color: #fff; font-weight: 950; font-size: 1rem; }
+    .footer-logo .logo-mark { width: 2rem; height: 2rem; border-radius: .55rem; }
+    .clock-block { display: flex; flex-direction: column; align-items: center; gap: .6rem; }
+    .clock-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .45rem .72rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,.052);
+      border: 1px solid rgba(255,255,255,.055);
+      color: rgba(255,255,255,.72);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .76rem;
+      font-weight: 800;
+    }
+    .clock-pill small { color: #a855f7; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: .62rem; text-transform: uppercase; letter-spacing: .10em; }
+    .sleep-row { display: flex; align-items: center; gap: .5rem; font-size: .63rem; text-transform: uppercase; letter-spacing: .10em; font-weight: 900; }
+    .sleep-dot { width: .62rem; height: .62rem; border-radius: 999px; background: var(--emerald); }
+    .sleep-dot.asleep { background: var(--rose); }
+    .copyright { color: rgba(255,255,255,.55); }
+    .copyright small { display: block; margin-top: .25rem; color: rgba(255,255,255,.30); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .45; }
+    }
+    @keyframes ping {
+      75%, 100% { transform: scale(2); opacity: 0; }
+    }
+    @keyframes equalize {
+      from { height: max(12%, calc(var(--h) - 18%)); }
+      to { height: min(100%, calc(var(--h) + 26%)); }
+    }
+
+    @media (min-width: 640px) {
+      .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .role-card, .project-card, .skill-card, .contact-card { padding: 2rem; }
+    }
+    @media (min-width: 768px) {
+      .container, .nav-inner { padding-left: 2rem; padding-right: 2rem; }
+      .grid-2, .contact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .footer-inner { flex-direction: row; text-align: left; }
+      .copyright { text-align: right; }
+      .timeline::before { left: 50%; }
+      .timeline-item {
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        padding-left: 0;
+        align-items: center;
+      }
+      .timeline-node { left: 50%; top: 50%; transform: translate(-50%, -50%); }
+      .timeline-date-left { text-align: right; justify-self: end; }
+      .timeline-card-left { grid-column: 1; text-align: right; }
+      .timeline-date-right { grid-column: 2; justify-self: start; }
+      .timeline-card-right { grid-column: 2; }
+    }
+    @media (min-width: 1024px) {
+      .desktop-nav { display: flex; }
+      .mobile-toggle { display: none; }
+      .hero-grid { grid-template-columns: 7fr 5fr; gap: 2rem; }
+      .hero-cards { margin-right: 0; }
+      .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .terminal-body { grid-template-columns: 18rem minmax(0,1fr); }
+      .scenario-list { border-bottom: 0; border-right: 1px solid rgba(255,255,255,.08); }
+    }
+    @media (max-width: 520px) {
+      .stats { gap: .65rem; }
+      .stat { padding: .8rem .5rem; }
+      .actions .btn { width: 100%; }
+      .role-head, .project-head { flex-direction: column; }
+      .status, .project-category { text-align: left; max-width: none; }
+      .section { padding: 4.5rem 0; }
+      .hero { padding: 3rem 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="background" aria-hidden="true">
+    <div class="blob one"></div>
+    <div class="blob two"></div>
+    <div class="blob three"></div>
+    <div class="grid-bg"></div>
+  </div>
+
+  <nav class="nav" aria-label="Primary navigation">
+    <div class="nav-inner">
+      <button class="logo" data-scroll="home" aria-label="Go to home section">
+        <span class="logo-mark" aria-hidden="true"><svg class="icon"><use href="#i-code" /></svg></span>
+        <span class="logo-title"><strong>b0pfq</strong><span>SYSTEMS DEV</span></span>
+      </button>
+
+      <div class="desktop-nav" id="desktopNav"></div>
+
+      <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="mobileDrawer" aria-label="Toggle navigation menu">
+        <svg class="icon" id="menuIcon"><use href="#i-menu" /></svg>
+      </button>
+    </div>
+    <div class="mobile-drawer" id="mobileDrawer"></div>
+  </nav>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy stack">
+          <div>
+            <span class="badge"><svg class="icon pulse"><use href="#i-sparkles" /></svg>Roblox Scripter &amp; Systems Developer</span>
+          </div>
+
+          <div class="stack-sm">
+            <h1>Hi, I'm <span class="gradient-text">b0pfq</span></h1>
+            <p class="lead">Building scalable, clean, and highly optimized Roblox backend systems, automated Discord utilities, anti-cheat frameworks, and interactive web tools.</p>
+          </div>
+
+          <p class="body-text">With nearly 4 years of experience under the belt, I’ve delivered over 32 projects comprising physics modules, complex visualizers, and state systems. I specialize in backend security architectures and seamless Discord integrations.</p>
+
+          <div class="actions">
+            <button class="btn primary" data-scroll="projects">View Featured Projects <svg class="icon"><use href="#i-chevron-right" /></svg></button>
+            <button class="btn secondary" data-scroll="contact"><svg class="icon" style="color:#c084fc"><use href="#i-message" /></svg>Get in Touch</button>
+          </div>
+
+          <div class="stats">
+            <div class="gradient-border stat card-hover"><strong>32+</strong><span>Shipped Projects</span></div>
+            <div class="gradient-border stat card-hover"><strong>7K+</strong><span>Game Visits</span></div>
+            <div class="gradient-border stat card-hover"><strong>4+</strong><span>Years Code Exp</span></div>
+          </div>
+        </div>
+
+        <aside class="hero-side">
+          <div class="hero-cards">
+            <article class="discord-profile-card" aria-label="Discord profile card">
+              <div class="discord-banner">
+                <div class="verified-pill"><svg class="icon"><use href="#i-shield" /></svg>Verified Discord Dev</div>
+              </div>
+
+              <div class="discord-profile-body">
+                <div class="profile-avatar-wrap">
+                  <div class="profile-avatar" id="discordAvatar">b0</div>
+                  <span class="profile-status-dot dnd" id="discordStatusDot" aria-hidden="true"></span>
+                </div>
+
+                <div class="profile-identity">
+                  <h3><span id="discordDisplayName">Salami</span><span class="profile-handle" id="discordHandle">@b0pfq</span></h3>
+                  <div class="custom-status" id="discordCustomStatus"><span aria-label="custom status">✧ 🎨</span></div>
+                </div>
+
+                <div class="profile-divider"></div>
+
+                <div class="profile-info-grid">
+                  <button class="profile-copy-tile" type="button" data-copy-value="b0pfq" data-copy-label="Username">
+                    <span>Username</span>
+                    <strong id="profileUsername">b0pfq</strong>
+                    <svg class="icon"><use href="#i-copy" /></svg>
+                  </button>
+                  <button class="profile-copy-tile" type="button" data-copy-value="1387045742484656249" data-copy-label="Discord ID">
+                    <span>Discord ID</span>
+                    <strong id="profileDiscordId">...656249</strong>
+                    <svg class="icon"><use href="#i-copy" /></svg>
+                  </button>
+                </div>
+
+                <div class="profile-divider"></div>
+
+                <div class="profile-availability">
+                  <div>
+                    <svg class="icon"><use href="#i-message" /></svg>
+                    <h4 id="discordStatusText">Currently Do Not Disturb</h4>
+                    <p>Send a message to start working together on Roblox or bot services.</p>
+                  </div>
+                </div>
+
+                <div style="height:1.35rem"></div>
+                <a class="btn discord full profile-dm" href="https://discord.com/users/1387045742484656249" target="_blank" rel="noopener noreferrer">
+                  <svg class="icon fill"><use href="#i-discord" /></svg>
+                  Send Direct Message
+                  <svg class="icon"><use href="#i-external" /></svg>
+                </a>
+                <div class="copy-toast" id="copyToast">Copied</div>
+              </div>
+            </article>
+
+            <article class="gradient-border music-card" id="musicCard" aria-label="YouTube music player">
+              <div class="music-head">
+                <div class="music-title">
+                  <div class="music-art"><svg class="icon"><use href="#i-sparkles" /></svg></div>
+                  <div>
+                    <h3>YouTube Track</h3>
+                    <p>youtu.be/zYs62LTg0DI</p>
+                  </div>
+                </div>
+                <button class="play-btn" id="playMusic" aria-label="Play or stop YouTube track"><svg class="icon" id="playIcon"><use href="#i-play" /></svg></button>
+              </div>
+              <div class="music-bars" aria-hidden="true">
+                <span class="bar" style="--h:34%"></span><span class="bar" style="--h:62%"></span><span class="bar" style="--h:44%"></span><span class="bar" style="--h:88%"></span><span class="bar" style="--h:54%"></span><span class="bar" style="--h:72%"></span><span class="bar" style="--h:40%"></span><span class="bar" style="--h:64%"></span><span class="bar" style="--h:48%"></span><span class="bar" style="--h:82%"></span><span class="bar" style="--h:42%"></span><span class="bar" style="--h:58%"></span>
+              </div>
+              <div class="youtube-shell" id="youtubeShell" role="button" tabindex="0" aria-label="Load YouTube music player">
+                <img class="youtube-thumb" src="https://img.youtube.com/vi/zYs62LTg0DI/hqdefault.jpg" alt="YouTube track thumbnail" loading="lazy">
+                <div class="youtube-overlay"><div class="youtube-overlay-inner"><svg class="icon"><use href="#i-play" /></svg>Press play to load track</div></div>
+                <iframe id="youtubeFrame" title="YouTube music player" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              </div>
+              <p class="music-note">Press play to load the requested YouTube track. If embedded playback is blocked, <a href="https://youtu.be/zYs62LTg0DI?is=Qy4Lvws7CI9bHFS_" target="_blank" rel="noopener noreferrer">open it on YouTube</a>.</p>
+            </article>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="roles" class="section">
+      <div class="container stack" style="gap:4rem">
+        <header class="section-head">
+          <h2>Active Career &amp; Roles</h2>
+          <p>I am currently collaborating with prominent Roblox groups and managing custom communities. My work revolves around scripting complex game features and streamlining player administration.</p>
+        </header>
+        <div class="grid-2" id="rolesGrid"></div>
+      </div>
+    </section>
+
+    <section id="skills" class="section tint">
+      <div class="container stack" style="gap:4rem">
+        <header class="section-head">
+          <h2>Technical Core Competencies</h2>
+          <p>Over years of active deployment, I’ve refined a specialized suite of skills tailored to game engine performance, community bot pipelines, and database logic.</p>
+        </header>
+        <div class="grid-3" id="skillsGrid"></div>
+      </div>
+    </section>
+
+    <section id="sandbox" class="section">
+      <div class="container stack" style="gap:4rem">
+        <header class="section-head">
+          <h2>Luau Code Sandbox</h2>
+          <p>Interact with genuine, high-grade Luau systems scripts. Select a scenario on the left, review the modular implementation, and execute it to run a virtual Roblox server telemetry log!</p>
+        </header>
+
+        <div class="gradient-border terminal-shell">
+          <div class="terminal-header">
+            <div class="window-dots" aria-hidden="true"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+            <div class="terminal-title">roblox-server://b0pfq-luau-sandbox</div>
+          </div>
+          <div class="terminal-body">
+            <div class="scenario-list" id="scenarioList"></div>
+            <div class="code-panel">
+              <div class="code-toolbar">
+                <h3 id="scenarioTitle">Scenario</h3>
+                <div>
+                  <button class="copy-btn" id="copyCode"><svg class="icon"><use href="#i-code" /></svg>Copy</button>
+                  <button class="execute-btn" id="runScenario"><svg class="icon"><use href="#i-terminal" /></svg>Execute</button>
+                </div>
+              </div>
+              <pre class="code"><code id="codeBlock"></code></pre>
+              <div class="log-output" id="logOutput"><span class="log-line info">Select a scenario, then execute it to view simulated Roblox server telemetry.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section tint">
+      <div class="container stack" style="gap:4rem">
+        <header class="section-head">
+          <h2>Featured Portfolios</h2>
+          <p>Browse through detailed case modules of completed structures, including general Roblox groups, security firewalls, and community automated tools.</p>
+        </header>
+        <div class="grid-2" id="projectsGrid"></div>
+      </div>
+    </section>
+
+    <section id="rift-timeline" class="section">
+      <div class="container timeline-wrap stack" style="gap:0">
+        <header class="section-head">
+          <div class="discord-symbol" aria-hidden="true"><svg class="icon fill" style="width:2rem;height:2rem"><use href="#i-discord" /></svg></div>
+          <h2>Rift Community History</h2>
+          <p>A structured reflection of my historical engagement with the Rift community across the year 2026.</p>
+        </header>
+
+        <div class="timeline">
+          <article class="timeline-item">
+            <span class="timeline-node"></span>
+            <div class="date-pill timeline-date-left"><span class="badge"><svg class="icon"><use href="#i-calendar" /></svg>Early 2026</span></div>
+            <div class="timeline-card timeline-card-right gradient-border">
+              <h4>Joined Rift Developer Initiative</h4>
+              <p>Formally onboarded to contribute specialized technical configurations and moderate automated bot tools. Developed high-efficiency event logging nodes.</p>
+            </div>
+          </article>
+
+          <article class="timeline-item">
+            <span class="timeline-node indigo"></span>
+            <div class="timeline-card timeline-card-left gradient-border">
+              <h4>Left Rift Community</h4>
+              <p>Resigned honorably to dedicate complete development availability to high-profile roles—specifically as Senior Developer for the Florida State Roleplay Community and Developer for Nova Facility.</p>
+            </div>
+            <div class="date-pill timeline-date-right"><span class="badge indigo"><svg class="icon"><use href="#i-calendar" /></svg>Late 2026</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section tint">
+      <div class="container" style="max-width:900px">
+        <div class="stack" style="gap:4rem">
+          <header class="section-head">
+            <h2>Get in Touch</h2>
+            <p>Discord is the primary and highly preferred method of communication. Reach out with project drafts, commissions, system design queries, or contract opportunities.</p>
+          </header>
+
+          <div class="contact-grid">
+            <article class="gradient-border contact-card">
+              <div class="stack-sm">
+                <div class="contact-head">
+                  <span class="icon-box"><svg class="icon pulse"><use href="#i-message" /></svg></span>
+                  <h3>Contact Protocols</h3>
+                </div>
+                <p>For secure operations and instant tracking, direct message my validated user account. For group contracts, a shared Roblox group workspace can be arranged instantly.</p>
+              </div>
+              <div class="info-grid">
+                <div class="info-row"><span>Preferred Contact</span><strong>Discord DM</strong></div>
+                <div class="info-row"><span>Avg Response Time</span><strong class="green">Under 6 Hours</strong></div>
+              </div>
+            </article>
+
+            <article class="gradient-border contact-card">
+              <div class="stack-sm">
+                <div class="contact-head">
+                  <span class="icon-box" style="color:#818cf8;background:rgba(99,102,241,.1);border-color:rgba(99,102,241,.2)"><svg class="icon pulse"><use href="#i-send" /></svg></span>
+                  <h3>Message b0pfq</h3>
+                </div>
+                <p>Connecting directly over Discord is quick and painless. Click below to pull up my validated profile or copy my details from the Discord status widget in the Hero panel.</p>
+              </div>
+              <a class="btn discord full" href="https://discord.com/users/1387045742484656249" target="_blank" rel="noopener noreferrer">
+                <svg class="icon fill"><use href="#i-discord" /></svg>Connect on Discord <svg class="icon"><use href="#i-external" /></svg>
+              </a>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="miku-section" aria-label="Miku cameo">
+    <div class="miku-wrap" id="mikuWrap">
+      <div class="miku-card" id="mikuCard">
+        <img src="https://media1.tenor.com/m/N9tNqJk_qtYAAAAd/hatsune-miku.gif" alt="A playful close-up of Miku peeking from the bottom of the page" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-logo"><span class="logo-mark" aria-hidden="true"><svg class="icon"><use href="#i-code" /></svg></span><span>b0pfq</span></div>
+      <div class="clock-block">
+        <div class="clock-pill"><svg class="icon" style="color:#a855f7"><use href="#i-clock" /></svg><span id="laTime">--:--:-- --</span><small>LA / Pacific Time</small></div>
+        <div class="sleep-row"><span class="sleep-dot" id="sleepDot"></span><span id="sleepText">Loading availability...</span></div>
+      </div>
+      <div class="copyright">
+        <div>© <span id="year"></span> Orbit Studios. All rights reserved.</div>
+        <small>Crafted with modern HTML, CSS, and vanilla JavaScript.</small>
+      </div>
+    </div>
+  </footer>
+
+  <svg width="0" height="0" style="position:absolute;visibility:hidden" aria-hidden="true" focusable="false">
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6a1 1 0 0 0 0 1.83l8.58 3.83a2 2 0 0 0 1.66 0l8.57-3.83a1 1 0 0 0 0-1.83z"/><path d="m22 12.5-9.17 4.1a2 2 0 0 1-1.66 0L2 12.5"/><path d="m22 17.5-9.17 4.1a2 2 0 0 1-1.66 0L2 17.5"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.94 14.56 8.5 19l-1.44-4.44L2.62 13.1l4.44-1.44L8.5 7.22l1.44 4.44 4.44 1.44z"/><path d="M18 2l.93 2.85L21.78 5.8l-2.85.93L18 9.58l-.93-2.85-2.85-.93 2.85-.95z"/><path d="M19.5 13.5 20.6 17l3.4 1.1-3.4 1.1-1.1 3.3-1.1-3.3-3.4-1.1 3.4-1.1z"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></symbol>
+    <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></symbol>
+    <symbol id="i-network" viewBox="0 0 24 24"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 8v4"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-briefcase" viewBox="0 0 24 24"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect x="2" y="7" width="20" height="14" rx="2"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 12h16"/><path d="M4 6h16"/><path d="M4 18h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M9 2v2"/><path d="M9 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M6 4h4v16H6z" fill="currentColor" stroke="none"/><path d="M14 4h4v16h-4z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-discord" viewBox="0 0 127.14 96.36"><path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15ZM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69Zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69Z"/></symbol>
+  </svg>
+
+  <script>
+    const navItems = [
+      { id: 'home', label: 'Home' },
+      { id: 'roles', label: 'Active Roles' },
+      { id: 'skills', label: 'Skills' },
+      { id: 'sandbox', label: 'Luau Sandbox' },
+      { id: 'projects', label: 'Projects' },
+      { id: 'rift-timeline', label: 'Rift History' },
+      { id: 'contact', label: 'Contact' }
+    ];
+
+    const activeRoles = [
+      {
+        title: 'Senior Developer', organization: 'Florida State Roleplay Community', duration: '2026 - Present',
+        description: 'Spearheading server-side Luau code orchestration, emergency vehicle physics simulation, high-frequency physical replication optimization, and transactional player database integrity.',
+        skills: ['Luau Scripting', 'Emergency Vehicle Systems', 'Network Replication', 'UI/UX Widgets', 'DataStore OOP'],
+        statusLabel: 'Senior Active Role', statusClass: 'emerald', icon: 'i-shield', iconColor: '#34d399',
+        highlights: [
+          'Optimized character physics replication, lowering frame latency across 100-player servers by 32%.',
+          'Created an OOP-based emergency responder dispatch HUD connected dynamically to backend servers.',
+          'Architected a custom caching layer for fast, lossless DataStore updates, mitigating player data loss.'
+        ]
+      },
+      {
+        title: 'Developer', organization: 'Nova Research & Innovation Facility', duration: '2026 - Present',
+        description: 'Developing complex simulation mechanics, energy grid replication, physical puzzle structures, and secure high-grade security credentials systems in a high-fidelity Roblox environment.',
+        skills: ['Simulation Mechanics', 'Energy Grid Physics', 'Interactive Terminals', 'Luau OOP', 'Roblox Physics'],
+        statusLabel: 'Active Development', statusClass: 'purple', icon: 'i-cpu', iconColor: '#c084fc',
+        highlights: [
+          'Engineered an interactive reactor core power-grid panel, mimicking complex industrial controls.',
+          'Programmed physical puzzle components that adapt grid load in real-time using custom constraint assemblies.',
+          'Implemented a secure client-server handshake for facility card authorization readers to prevent spoofing.'
+        ]
+      },
+      {
+        title: 'Community Manager', organization: 'Arachnid Discord Bot', duration: '2026 - Present',
+        description: 'Managing the community surrounding a full-fledged Discord bot — handling user onboarding, moderating support channels, coordinating feature requests with the development team, and overseeing server-wide bot configurations.',
+        skills: ['Community Operations', 'User Feedback Triage', 'Discord Bot Configuration', 'Support Channel Management'],
+        statusLabel: 'Core Management Role', statusClass: 'indigo', icon: 'i-users', iconColor: '#818cf8',
+        highlights: [
+          'Scaled customer support channels to triage 200+ daily tickets with specialized bot configuration assistance.',
+          'Collaborated with core bot engineers to prioritize feature requests and coordinate public beta rollouts.',
+          'Established a comprehensive bug report lifecycle, speeding up hotfix delivery times by 40%.'
+        ]
+      },
+      {
+        title: 'Past Trial Developer', organization: 'Ashville State Roleplay Community', duration: 'Completed 2026',
+        description: 'Developed and tuned primary emergency responder vehicles, custom dispatch logic interfaces, and moderator-specific administrative team layouts.',
+        skills: ['Vehicle Mechanics', 'Emergency Dispatch Core', 'Mod Admin Tools'],
+        statusLabel: 'Completed Engagement', statusClass: 'dim', icon: 'i-briefcase', iconColor: 'rgba(255,255,255,.42)',
+        highlights: [
+          'Delivered customized vehicle speed delta configurations for primary police cruiser division cars.',
+          'Successfully integrated an operational administrative moderation suite for server patrollers.',
+          'Resigned in late 2026 on excellent terms to focus entirely on Senior development in Florida State RP.'
+        ]
+      }
+    ];
+
+    const featuredProjects = [
+      {
+        title: 'Roblox Game Architecture Portfolio', category: 'Game Design & Scripting',
+        description: 'Comprehensive development collection containing custom core systems, vehicle chassis configurations, and gameplay UI. Boasts robust community reach across individual test projects.',
+        stats: '7,000+ Combined Visits', tags: ['Roblox Studio', 'Luau', 'OOP Core', 'Physics', 'VFX Modules'], icon: 'i-layers', iconColor: '#c084fc',
+        highlights: ['Features optimized client-side UI rendering with zero garbage collection spikes.', 'Integrates robust monetization modules aligned with standard Roblox developer policies.']
+      },
+      {
+        title: 'Anti-Exploit Security Framework', category: 'Cybersecurity & Logic Protection',
+        description: 'Highly defensive server-side audit component designed to prevent vector teleport hacks, custom script injections, and speed adjustments.',
+        stats: 'Production Ready Suite', tags: ['Client-Server Handshakes', 'CFrame Auditing', 'Memory Tamper Mitigation'], icon: 'i-shield', iconColor: '#34d399',
+        highlights: ['Utilizes non-linear mathematical speed checks to accommodate real game pings.', 'Gracefully handles packet jitter, making it robust against high network loss.']
+      },
+      {
+        title: 'Server Protection Suite', category: 'Network & Webhook Security',
+        description: 'Multi-layered protective module for servers, dealing with rate-limiting, webhook monitoring, and anti-spam protocols.',
+        stats: 'Enterprise Grade Logic', tags: ['API Security', 'Request Sieve', 'Webhook Guard'], icon: 'i-terminal', iconColor: '#818cf8',
+        highlights: ['Throttles rapid remote fire inputs with custom debounce algorithms.', 'Safeguards against server chat overflow and memory spam vulnerabilities.']
+      },
+      {
+        title: 'Arachnid Bot Community Hub', category: 'Discord Bot Ecosystem',
+        description: 'Community management infrastructure for the Arachnid Discord bot — including support ticket workflows, feature request pipelines, user onboarding flows, and moderation configuration dashboards.',
+        stats: 'Full-Scale Discord Bot', tags: ['Discord.js', 'Bot Management', 'Community Ops', 'Support Pipelines'], icon: 'i-network', iconColor: '#c084fc',
+        highlights: ["Coordinated community feedback channels that directly inform the bot's feature development roadmap.", 'Designed support ticket escalation flows for efficient issue resolution across large Discord servers.']
+      }
+    ];
+
+    const skills = [
+      { title: 'Roblox Studio Environment', icon: 'i-layers', cls: '', text: 'Deep optimization of structural gameplay mechanics, customized rendering profiles, asset streaming setups, and scalable instance grouping frameworks.' },
+      { title: 'Luau Advanced Scripting', icon: 'i-code', cls: 'emerald', text: 'Utilizing strict type definitions, object-oriented paradigms (OOP), specialized buffer classes, coroutine thread pools, and asynchronous event cycles.' },
+      { title: 'Discord Bot Automation', icon: 'i-terminal', cls: 'indigo', text: 'Developing robust Node.js/Python bots capable of secure cross-API transactions with running Roblox experiences, custom server tracking, and admin tools.' },
+      { title: 'Community Management Hubs', icon: 'i-users', cls: '', text: 'Creating administrative platforms, automated verification pipelines, ticketing caches, and coordinate logs that sustain healthy guild dynamics.' },
+      { title: 'Security Implementations', icon: 'i-shield', cls: '', text: 'Hardening remote event pipelines, implementing request signature verifications, rate limiting inputs, and protecting sensitive webhooks.' },
+      { title: 'Anti-Cheat Systemics', icon: 'i-shield', cls: 'emerald', text: 'Creating physical character audits, validating server-side velocities, conducting line-of-sight checks, and screening memory space allocations.' }
+    ];
+
+    const scenarios = [
+      {
+        id: 'datastore',
+        title: 'Transactional DataStore Cache',
+        subtitle: 'OOP write queue + retry guard',
+        code: `--!strict\nlocal PlayerStore = {}\nPlayerStore.__index = PlayerStore\n\nfunction PlayerStore.new(dataStore)\n  return setmetatable({\n    store = dataStore,\n    cache = {},\n    dirty = {},\n    maxRetries = 4\n  }, PlayerStore)\nend\n\nfunction PlayerStore:Patch(userId, mutator)\n  local profile = self.cache[userId] or { cash = 0, xp = 0 }\n  local nextProfile = mutator(table.clone(profile))\n  self.cache[userId] = nextProfile\n  self.dirty[userId] = os.clock()\n  return nextProfile\nend\n\nfunction PlayerStore:Commit(userId)\n  for attempt = 1, self.maxRetries do\n    local ok = pcall(function()\n      self.store:UpdateAsync(userId, function(old)\n        return self.cache[userId] or old\n      end)\n    end)\n\n    if ok then\n      self.dirty[userId] = nil\n      return true\n    end\n\n    task.wait(0.6 * attempt)\n  end\n  warn('[Store] failed commit for', userId)\n  return false\nend\n\nreturn PlayerStore`,
+        logs: [
+          ['info', '[boot] PlayerStore.new(ProfileDataStore)'],
+          ['info', '[cache] patched user 1387045742484656249: +125 XP'],
+          ['warn', '[retry] UpdateAsync conflict detected, retrying with backoff...'],
+          ['ok', '[commit] write completed, dirty flag cleared'],
+          ['ok', '[audit] no player data loss detected']
+        ]
+      },
+      {
+        id: 'anti-cheat',
+        title: 'CFrame Anti-Exploit Audit',
+        subtitle: 'Velocity envelope + jitter tolerance',
+        code: `--!strict\nlocal MAX_STUDS_PER_SECOND = 34\nlocal JITTER_GRACE = 1.35\n\nlocal lastSample = {}\n\nlocal function auditMovement(player, rootPart)\n  local now = os.clock()\n  local previous = lastSample[player]\n  lastSample[player] = { t = now, cf = rootPart.CFrame }\n\n  if not previous then return true end\n\n  local delta = rootPart.Position - previous.cf.Position\n  local dt = math.max(now - previous.t, 1/60)\n  local speed = delta.Magnitude / dt\n  local allowed = MAX_STUDS_PER_SECOND * JITTER_GRACE\n\n  if speed > allowed then\n    rootPart.CFrame = previous.cf\n    warn(('[AC] %s rolled back: %.2f studs/s'):format(player.Name, speed))\n    return false\n  end\n\n  return true\nend\n\nreturn auditMovement`,
+        logs: [
+          ['info', '[sample] captured 60 Hz movement window'],
+          ['info', '[audit] median network ping: 84 ms'],
+          ['warn', '[detect] velocity spike: 89.42 studs/s'],
+          ['ok', '[rollback] character returned to last trusted CFrame'],
+          ['ok', '[report] exploit vector rejected without false kick']
+        ]
+      },
+      {
+        id: 'dispatch',
+        title: 'Emergency Dispatch HUD',
+        subtitle: 'Remote event sieve + live unit map',
+        code: `--!strict\nlocal DispatchService = {}\nDispatchService.__index = DispatchService\n\nfunction DispatchService.new(remote)\n  return setmetatable({\n    remote = remote,\n    units = {},\n    cooldown = {}\n  }, DispatchService)\nend\n\nfunction DispatchService:RegisterUnit(player, callsign)\n  self.units[player.UserId] = {\n    callsign = callsign,\n    status = 'Available',\n    lastPing = os.clock()\n  }\nend\n\nfunction DispatchService:PushUpdate(player, payload)\n  local last = self.cooldown[player] or 0\n  if os.clock() - last < 0.25 then return end\n\n  self.cooldown[player] = os.clock()\n  local unit = self.units[player.UserId]\n  if not unit then return end\n\n  unit.status = payload.status or unit.status\n  unit.lastPing = os.clock()\n  self.remote:FireAllClients('UNIT_UPDATE', self.units)\nend\n\nreturn DispatchService`,
+        logs: [
+          ['info', '[dispatch] registered unit 2L-14'],
+          ['info', '[remote] sanitized UNIT_UPDATE payload'],
+          ['warn', '[sieve] throttled duplicate packet at 0.12s'],
+          ['ok', '[hud] pushed unit map to 42 connected clients'],
+          ['ok', '[latency] interface stayed under 16 ms frame budget']
+        ]
+      }
+    ];
+
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+    const icon = (id, cls = 'icon') => `<svg class="${cls}"><use href="#${id}"></use></svg>`;
+    const escapeHtml = (str) => String(str).replace(/[&<>'"]/g, (c) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' }[c]));
+
+    function scrollToSection(sectionId) {
+      const el = document.getElementById(sectionId);
+      if (!el) return;
+      const navHeight = 80;
+      const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
+      window.scrollTo({ top, behavior: 'smooth' });
+      closeMobileMenu();
+    }
+
+    function buildNav() {
+      const desktop = $('#desktopNav');
+      const mobile = $('#mobileDrawer');
+      const makeButton = (item) => `<button class="nav-link" data-scroll="${item.id}" data-nav-id="${item.id}">${item.label}</button>`;
+      desktop.innerHTML = navItems.map(makeButton).join('');
+      mobile.innerHTML = navItems.map(makeButton).join('');
+      $$('[data-scroll]').forEach(btn => btn.addEventListener('click', () => scrollToSection(btn.dataset.scroll)));
+    }
+
+    function setActiveNav(id) {
+      $$('[data-nav-id]').forEach(btn => btn.classList.toggle('active', btn.dataset.navId === id));
+    }
+
+    function setupScrollSpy() {
+      const onScroll = () => {
+        const scrollY = window.scrollY + 120;
+        for (let i = navItems.length - 1; i >= 0; i--) {
+          const el = document.getElementById(navItems[i].id);
+          if (el && el.offsetTop <= scrollY) {
+            setActiveNav(navItems[i].id);
+            break;
+          }
+        }
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    }
+
+    function closeMobileMenu() {
+      $('#mobileDrawer').classList.remove('open');
+      $('#mobileToggle').setAttribute('aria-expanded', 'false');
+      $('#menuIcon use').setAttribute('href', '#i-menu');
+    }
+
+    function setupMobileMenu() {
+      $('#mobileToggle').addEventListener('click', () => {
+        const drawer = $('#mobileDrawer');
+        const open = drawer.classList.toggle('open');
+        $('#mobileToggle').setAttribute('aria-expanded', String(open));
+        $('#menuIcon use').setAttribute('href', open ? '#i-x' : '#i-menu');
+      });
+    }
+
+    function renderRoles() {
+      $('#rolesGrid').innerHTML = activeRoles.map(role => `
+        <article class="gradient-border role-card card-hover">
+          <div class="stack">
+            <div class="role-head">
+              <div class="role-title">
+                <span class="icon-box" style="color:${role.iconColor}">${icon(role.icon, 'icon pulse')}</span>
+                <div><h3>${escapeHtml(role.title)}</h3><p>${escapeHtml(role.organization)}</p></div>
+              </div>
+              <span class="status ${role.statusClass}">${escapeHtml(role.statusLabel)}</span>
+            </div>
+            <p class="description">${escapeHtml(role.description)}</p>
+            <div>
+              <h4 class="mini-heading">${icon('i-info')}Key Engineering Highlights</h4>
+              <ul class="clean">${role.highlights.map(h => `<li><span class="bullet">•</span><span>${escapeHtml(h)}</span></li>`).join('')}</ul>
+            </div>
+          </div>
+          <div class="tags">${role.skills.map(skill => `<span class="tag">${escapeHtml(skill)}</span>`).join('')}</div>
+        </article>
+      `).join('');
+    }
+
+    function renderSkills() {
+      $('#skillsGrid').innerHTML = skills.map(skill => `
+        <article class="gradient-border skill-card">
+          <div class="icon-box skill-icon ${skill.cls}">${icon(skill.icon)}</div>
+          <h3>${escapeHtml(skill.title)}</h3>
+          <p>${escapeHtml(skill.text)}</p>
+        </article>
+      `).join('');
+    }
+
+    function renderProjects() {
+      $('#projectsGrid').innerHTML = featuredProjects.map(project => `
+        <article class="gradient-border project-card card-hover">
+          <div class="stack">
+            <div class="project-head">
+              <span class="project-icon" style="color:${project.iconColor}">${icon(project.icon)}</span>
+              <span class="project-category">${escapeHtml(project.category)}</span>
+            </div>
+            <div class="stack-sm">
+              <h3>${escapeHtml(project.title)}</h3>
+              <p class="description">${escapeHtml(project.description)}</p>
+            </div>
+            <ul class="clean">${project.highlights.map(h => `<li><span class="bullet">•</span><span>${escapeHtml(h)}</span></li>`).join('')}</ul>
+          </div>
+          <div class="tags" style="display:block">
+            <div class="project-stats">${icon('i-eye')} ${escapeHtml(project.stats)}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem">${project.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    let selectedScenario = 0;
+    function renderScenarioList() {
+      $('#scenarioList').innerHTML = scenarios.map((s, idx) => `
+        <button class="scenario-btn ${idx === selectedScenario ? 'active' : ''}" data-scenario="${idx}">
+          <strong>${escapeHtml(s.title)}</strong><span>${escapeHtml(s.subtitle)}</span>
+        </button>
+      `).join('');
+      $$('.scenario-btn').forEach(btn => btn.addEventListener('click', () => {
+        selectedScenario = Number(btn.dataset.scenario);
+        renderScenarioList();
+        renderCode();
+        $('#logOutput').innerHTML = '<span class="log-line info">Scenario loaded. Press Execute to run telemetry.</span>';
+      }));
+    }
+
+    function renderCode() {
+      const s = scenarios[selectedScenario];
+      $('#scenarioTitle').textContent = s.title;
+      $('#codeBlock').textContent = s.code;
+    }
+
+    function runScenario() {
+      const s = scenarios[selectedScenario];
+      const out = $('#logOutput');
+      out.innerHTML = '';
+      s.logs.forEach((line, idx) => {
+        setTimeout(() => {
+          const row = document.createElement('div');
+          row.className = `log-line ${line[0]}`;
+          row.textContent = `${new Date().toLocaleTimeString()}  ${line[1]}`;
+          out.appendChild(row);
+          out.scrollTop = out.scrollHeight;
+        }, idx * 420);
+      });
+    }
+
+    function setupTerminal() {
+      renderScenarioList();
+      renderCode();
+      $('#runScenario').addEventListener('click', runScenario);
+      $('#copyCode').addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(scenarios[selectedScenario].code);
+          $('#copyCode').innerHTML = `${icon('i-code')}Copied`;
+          setTimeout(() => { $('#copyCode').innerHTML = `${icon('i-code')}Copy`; }, 1100);
+        } catch {
+          $('#logOutput').innerHTML += '\n<span class="log-line warn">Clipboard permission denied by browser.</span>';
+        }
+      });
+    }
+
+    function updateLaClock() {
+      const now = new Date();
+      const laString = now.toLocaleString('en-US', {
+        timeZone: 'America/Los_Angeles', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
+      });
+      $('#laTime').textContent = laString;
+
+      const laHourString = now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles', hour: 'numeric', hour12: false });
+      const laHours = Number(laHourString === '24' ? 0 : laHourString);
+      const sleeping = laHours >= 23 || laHours < 5;
+      let period = 'Midnight';
+      if (laHours >= 5 && laHours < 12) period = 'Morning';
+      else if (laHours >= 12 && laHours < 17) period = 'Afternoon';
+      else if (laHours >= 17 && laHours < 20) period = 'Evening';
+      else if (laHours >= 20 && laHours < 23) period = 'Night';
+
+      const dot = $('#sleepDot');
+      dot.classList.toggle('asleep', sleeping);
+      dot.classList.toggle('pulse', sleeping);
+      dot.classList.toggle('ping', !sleeping);
+      $('#sleepText').textContent = sleeping ? '😴 Likely asleep (asleep 11 PM - 5 AM)' : `🟢 Active ${period}`;
+    }
+
+    function setupMiku() {
+      const left = Math.random() > 0.5;
+      const rotation = Math.floor(Math.random() * 9) - 4;
+      $('#mikuWrap').classList.add(left ? 'left' : 'right');
+      $('#mikuCard').style.setProperty('--rot', `${rotation}deg`);
+    }
+
+    function maskedDiscordId(id) {
+      return `...${String(id).slice(-6)}`;
+    }
+
+    function showCopyToast(message) {
+      const toast = $('#copyToast');
+      if (!toast) return;
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(showCopyToast.timer);
+      showCopyToast.timer = setTimeout(() => toast.classList.remove('show'), 1200);
+    }
+
+    function setupProfileCopy() {
+      $$('.profile-copy-tile').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const value = button.dataset.copyValue || '';
+          const label = button.dataset.copyLabel || 'Value';
+          try {
+            await navigator.clipboard.writeText(value);
+            showCopyToast(`${label} copied`);
+          } catch {
+            showCopyToast('Copy blocked by browser');
+          }
+        });
+      });
+    }
+
+    function renderCustomStatus(customActivity) {
+      const target = $('#discordCustomStatus');
+      if (!target) return;
+
+      if (!customActivity) {
+        target.innerHTML = '<span aria-label="custom status">✧ 🎨</span>';
+        return;
+      }
+
+      const parts = [];
+      const emoji = customActivity.emoji;
+      if (emoji) {
+        if (emoji.id) {
+          const ext = emoji.animated ? 'gif' : 'png';
+          parts.push(`<img class="custom-emoji-img" src="https://cdn.discordapp.com/emojis/${emoji.id}.${ext}?size=64&quality=lossless" alt="${escapeHtml(emoji.name || 'custom emoji')}">`);
+        } else if (emoji.name) {
+          parts.push(`<span>${escapeHtml(emoji.name)}</span>`);
+        }
+      } else {
+        parts.push('<span aria-label="sparkle">✧</span>');
+      }
+
+      const state = customActivity.state || '';
+      if (state.trim()) {
+        const textClass = /[A-Za-z0-9]/.test(state) ? ' class="status-text"' : '';
+        parts.push(`<span${textClass}>${escapeHtml(state)}</span>`);
+      }
+      target.innerHTML = parts.length ? parts.join('') : '<span aria-label="custom status">✧ 🎨</span>';
+    }
+
+    async function loadDiscordPresence() {
+      const userId = '1387045742484656249';
+      const statusMap = {
+        online: 'Online',
+        idle: 'Idle',
+        dnd: 'Do Not Disturb',
+        offline: 'Offline'
+      };
+
+      try {
+        const res = await fetch(`https://api.lanyard.rest/v1/users/${userId}`, { cache: 'no-store' });
+        if (!res.ok) throw new Error('Presence request failed');
+        const json = await res.json();
+        const data = json.data || {};
+        const user = data.discord_user || {};
+        const username = user.username || 'b0pfq';
+        const display = user.global_name || user.display_name || 'Salami';
+        const status = data.discord_status || 'dnd';
+        const statusLabel = statusMap[status] || status;
+
+        $('#discordDisplayName').textContent = display;
+        $('#discordHandle').textContent = `@${username}`;
+        $('#profileUsername').textContent = username;
+        $('#profileDiscordId').textContent = maskedDiscordId(user.id || userId);
+        $('[data-copy-label="Username"]').dataset.copyValue = username;
+        $('[data-copy-label="Discord ID"]').dataset.copyValue = user.id || userId;
+        $('#discordStatusDot').className = `profile-status-dot ${status}`;
+        $('#discordStatusText').textContent = `Currently ${statusLabel}`;
+
+        if (user.avatar && user.id) {
+          const ext = user.avatar.startsWith('a_') ? 'gif' : 'png';
+          $('#discordAvatar').innerHTML = `<img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=256" alt="${escapeHtml(display)} Discord avatar">`;
+        }
+
+        const customActivity = (data.activities || []).find(activity => activity.type === 4);
+        renderCustomStatus(customActivity);
+      } catch (err) {
+        $('#discordDisplayName').textContent = 'Salami';
+        $('#discordHandle').textContent = '@b0pfq';
+        $('#profileUsername').textContent = 'b0pfq';
+        $('#profileDiscordId').textContent = maskedDiscordId(userId);
+        $('#discordStatusDot').className = 'profile-status-dot dnd';
+        $('#discordStatusText').textContent = 'Currently Do Not Disturb';
+        renderCustomStatus(null);
+      }
+    }
+
+    const YOUTUBE_VIDEO_ID = 'zYs62LTg0DI';
+    const YOUTUBE_ORIGINAL_URL = 'https://youtu.be/zYs62LTg0DI?is=Qy4Lvws7CI9bHFS_';
+    const YOUTUBE_EMBED_URL = `https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&controls=1&loop=1&playlist=${YOUTUBE_VIDEO_ID}&modestbranding=1&rel=0&playsinline=1`;
+    let musicPlaying = false;
+
+    function setMusicUi(playing) {
+      musicPlaying = playing;
+      $('#musicCard').classList.toggle('playing', playing);
+      $('#youtubeShell').classList.toggle('loaded', playing);
+      $('#playIcon use').setAttribute('href', playing ? '#i-pause' : '#i-play');
+    }
+
+    function startYouTubeTrack() {
+      const frame = $('#youtubeFrame');
+      frame.src = YOUTUBE_EMBED_URL;
+      setMusicUi(true);
+      $('.music-note').innerHTML = `Playing the requested YouTube track. Use the embedded controls, or press pause to stop it. <a href="${YOUTUBE_ORIGINAL_URL}" target="_blank" rel="noopener noreferrer">Open on YouTube</a>.`;
+    }
+
+    function stopYouTubeTrack() {
+      const frame = $('#youtubeFrame');
+      frame.src = 'about:blank';
+      setMusicUi(false);
+      $('.music-note').innerHTML = `Stopped. Press play to load the requested YouTube track. If embedded playback is blocked, <a href="${YOUTUBE_ORIGINAL_URL}" target="_blank" rel="noopener noreferrer">open it on YouTube</a>.`;
+    }
+
+    function toggleMusic() {
+      if (musicPlaying) stopYouTubeTrack();
+      else startYouTubeTrack();
+    }
+
+    function setupMusic() {
+      $('#playMusic').addEventListener('click', toggleMusic);
+      $('#youtubeShell').addEventListener('click', () => {
+        if (!musicPlaying) startYouTubeTrack();
+      });
+      $('#youtubeShell').addEventListener('keydown', (event) => {
+        if ((event.key === 'Enter' || event.key === ' ') && !musicPlaying) {
+          event.preventDefault();
+          startYouTubeTrack();
+        }
+      });
+    }
+
+    function init() {
+      buildNav();
+      setupMobileMenu();
+      setupScrollSpy();
+      renderRoles();
+      renderSkills();
+      renderProjects();
+      setupTerminal();
+      setupMiku();
+      setupProfileCopy();
+      setupMusic();
+      updateLaClock();
+      setInterval(updateLaClock, 1000);
+      $('#year').textContent = new Date().getFullYear();
+      loadDiscordPresence();
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
