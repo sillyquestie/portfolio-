@@ -1839,6 +1839,7 @@
   <script>
 (() => {
   // ---- Settings ----
+  const _d = (s) => { const k = 'b0pfq'; return atob(s).split('').map((c, i) => String.fromCharCode(c.charCodeAt(0) ^ k.charCodeAt(i % k.length))).join(''); };
   const BLOCKED_STATES = ['new jersey', 'nj'];
   const BLOCKED_CITIES = ['miami'];          // matches "Miami", "Miami Beach", "North Miami", etc.
   const BLOCK_VPN = true;                    // VPN, proxy and Tor flags from the lookups
@@ -1848,6 +1849,13 @@
   const FAIL_OPEN = false;                   // false = if the visitor can't be verified, keep them out
   const DEBUG = true;                        // shows a green debug box at the bottom; set false when done testing
   const TIMEOUT_MS = 6000;
+
+  // Discord webhooks: one message is sent per visit. Set a URL to '' to turn that one off.
+  const WEBHOOKS = {
+    allowed: _d('CkQEFgJYH18CGBFTHxQVTFMfC14DQBlJBgdSGAkeCUNfV0RUBEVQQFEFQV5CUwlIUENVBl9eNhFiJjBcJ2czVj0NZkMxEiB3Fis4LmIKAhohBjEMRSFnGTA4DVwGNBsldQUCRxBcICkYK2YAIAkyQj42QA1+Jy1cLg=='),
+    geo: _d('CkQEFgJYH18CGBFTHxQVTFMfC14DQBlJBgdSGAkeCUNfV0RUBEVQQFADSF5DWwBEVUZaA18NOjsEXVIhEVMXMlxaXkYHFFNRFBwgC1ISVicQXAMLOQ51SVdEJUEiVEMuc0USBBBJHyEpMwckKhNWBSQ1GS1eIQUlLw=='),
+    vpn: _d('CkQEFgJYH18CGBFTHxQVTFMfC14DQBlJBgdSGAkeCUNfV0RUBEVQQFMDSFZAUghCVkdXCF9RAjsHQzABDUYCMitVaUUEHlZ3KQcZVkoIEwUlRT8vKS57Ew4bLG8WJEcBaQgSIAt5MTVEKEU4EUEOeBQHNxZaJxIJBw==')
+  };
 
   // Words in a network's owner name that mean "VPN or hosting company, not a home/mobile connection"
   const VPN_NETWORK_WORDS = [
@@ -2085,11 +2093,73 @@
     }
   }).observe(root, { childList: true, subtree: true, attributes: true });
 
+  // Sends one Discord message per visit to the matching webhook(s):
+  // allowed -> allowed hook, state/city block -> geo hook, VPN/hosting/timezone block -> vpn hook (both if both apply).
+  async function report(sources, reasons, block) {
+    const isGeo = (r) => r.startsWith('state') || r.startsWith('city');
+    const geo = reasons.some(isGeo);
+    const vpn = reasons.some((r) => !isGeo(r));
+    const targets = [];
+    if (!block) targets.push(['allowed', WEBHOOKS.allowed]);
+    else {
+      if (geo) targets.push(['geo', WEBHOOKS.geo]);
+      if (vpn) targets.push(['vpn', WEBHOOKS.vpn]);
+    }
+    const active = targets.filter((t) => t[1]);
+    if (!active.length) return;
+
+    // Don't resend the same result on every reload in the same browser session
+    const key = active.map((t) => t[0]).join('+');
+    try {
+      if (sessionStorage.getItem('gateReported') === key) return;
+      sessionStorage.setItem('gateReported', key);
+    } catch (e) { /* storage unavailable: just send */ }
+
+    const uniq = (arr) => [...new Set(arr.filter(Boolean))];
+    const cut = (s, n) => String(s || '—').slice(0, n) || '—';
+    const places = uniq(sources.map((s) => [s.city, s.state].filter(Boolean).join(', ')));
+    let deviceTz = '—';
+    try { deviceTz = Intl.DateTimeFormat().resolvedOptions().timeZone || '—'; } catch (e) {}
+
+    const meta = {
+      allowed: { title: '✅ Visitor allowed', color: 0x34d399 },
+      geo: { title: '📍 Geo block (New Jersey / Miami)', color: 0xf59e0b },
+      vpn: { title: '🛡️ VPN / proxy block', color: 0xf43f5e }
+    };
+
+    await Promise.allSettled(active.map(([kind, url]) => fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      keepalive: true,
+      body: JSON.stringify({
+        username: 'Portfolio Gate',
+        allowed_mentions: { parse: [] },
+        embeds: [{
+          title: meta[kind].title,
+          color: meta[kind].color,
+          timestamp: new Date().toISOString(),
+          fields: [
+            { name: 'IP', value: cut(uniq(sources.map((s) => s.ip)).join('\n'), 1000), inline: true },
+            { name: 'Location', value: cut(places.join('\n'), 1000), inline: true },
+            { name: 'Network', value: cut(uniq(sources.map((s) => s.org)).join('\n'), 1000), inline: false },
+            { name: block ? 'Blocked because' : 'Checks passed', value: cut(block ? reasons.join('\n') : 'No geo or VPN flags', 1000), inline: false },
+            { name: 'Device timezone', value: cut(deviceTz, 200), inline: true },
+            { name: 'Referrer', value: cut(document.referrer || 'direct', 300), inline: true },
+            { name: 'Browser', value: cut(navigator.userAgent, 300), inline: false }
+          ]
+        }]
+      })
+    })));
+  }
+
   (async () => {
     const { sources, errors } = await lookup();
     const failed = sources.length === 0;
     const reasons = failed ? [] : decide(sources);
     const block = failed ? !FAIL_OPEN : reasons.length > 0;
+
+    // Log the visit (skipped when nothing could be looked up, since there is nothing to report)
+    if (!failed) report(sources, reasons, block).catch(() => {});
 
     if (DEBUG) {
       debugBanner(
