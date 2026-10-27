@@ -1852,7 +1852,9 @@
   // Words in a network's owner name that mean "VPN or hosting company, not a home/mobile connection"
   const VPN_NETWORK_WORDS = [
     'vpn', 'proton', 'nord', 'mullvad', 'surfshark', 'expressvpn', 'private internet access', 'windscribe',
-    'm247', 'datacamp', 'cdn77', 'packethub', 'tefincom', 'leaseweb', 'hosting', 'colocation', 'datacenter', 'data center'
+    'm247', 'datacamp', 'cdn77', 'packethub', 'tefincom', 'leaseweb', 'hosting', 'colocation', 'datacenter', 'data center',
+    'servers.com', 'server', 'cloud', 'dedicated', 'digitalocean', 'linode', 'vultr', 'ovh', 'hetzner',
+    'amazon', 'aws', 'azure', 'oracle', 'choopa', 'psychz', 'quadranet', 'zenlayer', 'tzulo', 'datapacket', 'performive'
   ];
 
   const root = document.documentElement;
@@ -1948,21 +1950,41 @@
       else errors.push(PROVIDERS[i].name + ': ' + ((r.reason && r.reason.message) || r.reason));
     });
 
-    // Third opinion, specifically on VPN/proxy status. Needs the visitor's IP from the lookups above.
-    const ip = (sources.find((s) => s.ip) || {}).ip;
-    if (ip) {
-      try {
-        const d = await fetchJson('https://proxycheck.io/v2/' + encodeURIComponent(ip) + '?vpn=1&asn=1');
-        const e = d && d[ip];
-        if (!e) throw new Error('bad response');
-        sources.push({
-          provider: 'proxycheck.io', ip, vpn: e.proxy === 'yes', datacenter: false,
-          city: e.city, state: e.region, tz: e.timezone, org: e.provider || e.organisation, ntype: e.type
+    // Phones are often dual-stack (an IPv4 and an IPv6 address), and different services may see different ones.
+    // Check every address we saw (max 2) with ipapi.is and proxycheck.io, which both look up any IP.
+    const ips = [...new Set(sources.map((s) => s.ip).filter(Boolean))].slice(0, 2);
+    const asked = new Set(sources.filter((s) => s.provider === 'ipapi.is').map((s) => s.ip));
+    const extra = [];
+    ips.forEach((ip) => {
+      if (!asked.has(ip)) {
+        extra.push({
+          label: 'ipapi.is (' + ip + ')',
+          run: async () => {
+            const info = PROVIDERS[0].parse(await fetchJson('https://api.ipapi.is/?q=' + encodeURIComponent(ip)));
+            if (!info) throw new Error('bad response');
+            info.provider = 'ipapi.is';
+            return info;
+          }
         });
-      } catch (err) {
-        errors.push('proxycheck.io: ' + ((err && err.message) || err));
       }
-    }
+      extra.push({
+        label: 'proxycheck.io (' + ip + ')',
+        run: async () => {
+          const d = await fetchJson('https://proxycheck.io/v2/' + encodeURIComponent(ip) + '?vpn=1&asn=1');
+          const e = d && d[ip];
+          if (!e) throw new Error('bad response');
+          return {
+            provider: 'proxycheck.io', ip, vpn: e.proxy === 'yes', datacenter: false,
+            city: e.city, state: e.region, tz: e.timezone, org: e.provider || e.organisation, ntype: e.type
+          };
+        }
+      });
+    });
+    const results2 = await Promise.allSettled(extra.map((x) => x.run()));
+    results2.forEach((r, i) => {
+      if (r.status === 'fulfilled') sources.push(r.value);
+      else errors.push(extra[i].label + ': ' + ((r.reason && r.reason.message) || r.reason));
+    });
     return { sources, errors };
   }
 
